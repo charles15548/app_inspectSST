@@ -6,11 +6,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void>  main() async{
   await Supabase.initialize(
-    url: 'https://czqgamnqxxgkqdgnazvy.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6cWdhbW5xeHhna3FkZ25henZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc3OTc3MDIsImV4cCI6MjA3MzM3MzcwMn0.dsHCfv4AbPpCpTNiaq75_wUQAYSDzEvGrXIOefzFbRE'
+    url: 'https://flqfnpfxbpashpbgpqcx.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZscWZucGZ4YnBhc2hwYmdwcWN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1OTYwNDcsImV4cCI6MjA4MDE3MjA0N30.WfmVU7cEwFrR4dv1CXIW-4etJvjZDX3aEX-97hZW6zU'
   );
   runApp(const Main());
-
 }
 
 class Main extends StatefulWidget {
