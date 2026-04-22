@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const COLORFONDO = Color.fromRGBO(116, 9, 9, 1);
-const COLORAPPBAR = Color.fromRGBO(116, 9, 9, 1);
+const COLORFONDO = Color.fromRGBO(8, 48, 109, 1);
+const COLORAPPBAR = Color.fromRGBO(5, 39, 102, 1);
 const COLORBORDE = Color.fromARGB(209, 123, 123, 123);
 const COLORTRANSPARENTE = Color.fromARGB(236, 249, 226, 221);
 const COLORBASE = Color.fromRGBO(240, 216, 190, 1.000);

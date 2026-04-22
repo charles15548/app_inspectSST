@@ -27,6 +27,8 @@ class InspeccionesService {
           id_checklist,
           nombre,
           estado,
+          fecha_inicio,
+          fecha_fin,
           checklist_items (count)
         ''');
 

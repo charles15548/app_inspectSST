@@ -114,16 +114,16 @@ class _MenuprincipalState extends State<Menuprincipal> {
                   const SizedBox(height: 25),
 
                   // Sección de Acciones
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      " Menú Principal",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54),
-                    ),
-                  ),
+                  // const Align(
+                  //   alignment: Alignment.centerLeft,
+                  //   child: Text(
+                  //     " Menú Principal",
+                  //     style: TextStyle(
+                  //         fontSize: 18,
+                  //         fontWeight: FontWeight.bold,
+                  //         color: Colors.black54),
+                  //   ),
+                  // ),
 
                   const SizedBox(height: 15),
 

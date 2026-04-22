@@ -10,7 +10,7 @@ import 'package:movil_inspeccion/utils/colores.dart';
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("¿Seguro que deseas volver?"),
-        content: const Text("Aún no has finalizado la inspección.\nSe perderá el progreso."),
+        content: const Text("Aún hay tareas por completar"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),

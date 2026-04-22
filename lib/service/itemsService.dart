@@ -20,17 +20,26 @@ class Itemsservice {
     }
   }
 
-  static Future<void> guardarEvidencias(List<Map<String, dynamic>> evidencias, int idChecklist) async {
-    try{
-      await supabase.from('evidencia').insert(evidencias);
 
-      // await supabase.from('checklist').update({
-      //   'estado':true,
-      //   }).eq('id_checklist', idChecklist);
-    }catch(e){
-        throw Exception('Error al guardar: $e');
-      }
+  // static Future<void> guardarEvidencias(List<Map<String, dynamic>> evidencias, int idChecklist) async {
+  //   try{
+  //     await supabase.from('evidencia').insert(evidencias);
+
+  //     // await supabase.from('checklist').update({
+  //     //   'estado':true,
+  //     //   }).eq('id_checklist', idChecklist);
+  //   }catch(e){
+  //       throw Exception('Error al guardar: $e');
+  //     }
+  // }
+  static Future<void> guardarEvidenciaItem(Map<String, dynamic> evidencia) async {
+    try {
+      await supabase.from('evidencia').insert([evidencia]);
+    } catch (e) {
+      throw Exception('Error al guardar item: $e');
+    }
   }
+
   
 
   static Future<String?> subirImagen(File archivo, int idChecklist ) async{

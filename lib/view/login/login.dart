@@ -57,17 +57,17 @@ class _LoginState extends State<Login> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 45, 10, 10),
+      backgroundColor: Color.fromARGB(255, 10, 24, 45),
       body: Stack(children: [
         Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/banner2.jpeg'),
+                  image: AssetImage('assets/banner.png'),
                   fit: BoxFit.none, 
-                  scale: 1.3, // Ajusta este valor (menor a 1 es zoom in, mayor a 1 es zoom out)
-                  alignment: Alignment(-0.6, 0.0),
+                  scale: 0.9, // Ajusta este valor (menor a 1 es zoom in, mayor a 1 es zoom out)
+                  alignment: Alignment(-0.0, 1.0),
                   colorFilter: ColorFilter.mode(
-                    Color.fromARGB(210, 83, 50, 50), // Tono rojizo oscuro disimulado
+                    Color.fromARGB(153, 27, 38, 65),  
                     BlendMode.darken,
                   ))),
         ),
@@ -78,7 +78,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                    'assets/logo.png',
+                    'assets/logoOPV.jpeg',
                     width: size.width * 0.4,
                     fit: BoxFit.contain,
                   ),
@@ -175,7 +175,7 @@ Widget _buildTextField({
     decoration: InputDecoration(
       hintText: hint,
       hintStyle:const TextStyle(color: Colors.grey),
-        prefixIcon: Icon(icon, color: const Color.fromARGB(255, 154, 20, 20)),
+        prefixIcon: Icon(icon, color:COLORFONDO),
  
         filled: true,
         fillColor: Colors.white,

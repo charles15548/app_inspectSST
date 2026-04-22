@@ -54,10 +54,7 @@ class _ItemsState extends State<Items> {
 
   Future<void> _cargarDatos() async {
     final data = await Itemsservice.listItems(widget.idChecklist);
-    // setState(() {
-    //   _items = data;
-    //   _isLoading = false;
-    // });
+
     setState(() {
       _items = data.map((item) {
         return {
@@ -70,7 +67,9 @@ class _ItemsState extends State<Items> {
           'video_url': null,
           'archivo_audio': null,
           'audio_url': null,
-          'avance': null
+          'avance': null,
+          'enviado': false,
+          'enviando': false,
         };
       }).toList();
       _isLoading = false;
@@ -117,72 +116,84 @@ class _ItemsState extends State<Items> {
       });
     }
   }
+ 
+  bool _itemListoParaEnviar(Map<String, dynamic> item) {
+    // Ajusta esta regla según tu negocio:
+    // aquí pedimos que al menos haya tocado avance u observación/evidencia.
+    final bool tieneAvance = item['avance'] != null;
+    //final bool tieneObs = (item['observacion'] ?? '').toString().trim().isNotEmpty;
+    //final bool tieneMedia = item['archivo_foto'] != null ||
+    //  item['archivo_video'] != null ||  item['archivo_audio'] != null;
+    return tieneAvance;
+  }
 
-  Future<void> finalizarInspeccion() async {
-    setState(() => _isLoading = true);
+  Future<void> enviarItemActual() async {
+    final int index = _currentIndex;
+    final item = _items[index];
+
+    if (!_itemListoParaEnviar(item)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Completa la tarea antes de enviarlo.")),
+      );
+      return;
+    }
+
+    setState(() => _items[index]['enviando'] = true);
+
     try {
-      if (await recorder.isRecording()) {
+      if (_isRecording && _recordingIndex == index) {
         final path = await recorder.stop();
-
-        if (path != null && _recordingIndex != null) {
-          _items[_recordingIndex!]['archivo_audio'] = File(path);
+        if (path != null) {
+          _items[index]['archivo_audio'] = File(path);
         }
-
         _isRecording = false;
         _recordingIndex = null;
       }
 
-      List<Map<String, dynamic>> evidenciasFinales = [];
-      for (var item in _items) {
-        String? urlSuFoto;
-        String? urlVideo;
-        String? urlAudio;
+      String? urlFoto;
+      String? urlVideo;
+      String? urlAudio;
 
-        if (item['archivo_foto'] != null) {
-          urlSuFoto = await Itemsservice.subirImagen(
-              item['archivo_foto'], widget.idChecklist);
-        }
-        if (item['archivo_video'] != null) {
-          urlVideo = await Itemsservice.subirImagen(
-              item['archivo_video'], widget.idChecklist);
-        }
-        if (item['archivo_audio'] != null) {
-          urlAudio = await Itemsservice.subirImagen(
-              item['archivo_audio'], widget.idChecklist);
-        }
-        evidenciasFinales.add({
-          'id_items': item['id_items'],
-          'id_auth': idAuth,
-          'foto_url': urlSuFoto,
-          'video_url': urlVideo,
-          'audio_url': urlAudio,
-          'observacion': item['observacion'],
-          'fecha': DateTime.now().toIso8601String(),
-          'estado': item['estado_seleccionado'] ?? true,
-          'avance': item['avance'],
-        });
+      if (item['archivo_foto'] != null) {
+        urlFoto = await Itemsservice.subirImagen(
+            item['archivo_foto'], widget.idChecklist);
       }
-      await Itemsservice.guardarEvidencias(
-          evidenciasFinales, widget.idChecklist);
+      if (item['archivo_video'] != null) {
+        urlVideo = await Itemsservice.subirImagen(
+            item['archivo_video'], widget.idChecklist);
+      }
+      if (item['archivo_audio'] != null) {
+        urlAudio = await Itemsservice.subirImagen(
+            item['archivo_audio'], widget.idChecklist);
+      }
 
-      if (mounted) {
-        inspeccionFinalizada = true;
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Inspecciones(titulo: 'Inspecciones de seguridad')));
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text("Inspección y fotos guardadas correctamente")),
-        );
-      }
+      final payload = {
+        'id_items': item['id_items'],
+        'id_auth': idAuth,
+        'foto_url': urlFoto,
+        'video_url': urlVideo,
+        'audio_url': urlAudio,
+        'observacion': item['observacion'],
+        'fecha': DateTime.now().toIso8601String(),
+        'estado': true,
+        'avance': item['avance'],
+      };
+
+      await Itemsservice.guardarEvidenciaItem(payload);
+
+      setState(() {
+        _items[index]['enviado'] = true;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Tarea ${index + 1} enviado correctamente")),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e")),
+        SnackBar(content: Text("Error enviando Tarea: $e")),
       );
     } finally {
-      setState(() => _isLoading = false);
+      setState(() => _items[index]['enviando'] = false);
     }
   }
 
@@ -305,10 +316,11 @@ class _ItemsState extends State<Items> {
             // 3. Botones de navegación inferiores
 
             NavButtons(
-                currentIndex: _currentIndex,
-                totalItems: _items.length,
-                pageController: _pageController,
-                onFinalizar: finalizarInspeccion)
+  canEnviar: _itemListoParaEnviar(_items[_currentIndex]),
+  enviado: _items[_currentIndex]['enviado'] == true,
+  enviando: _items[_currentIndex]['enviando'] == true,
+  onEnviar: enviarItemActual,
+),
           ],
         ),
       ),
