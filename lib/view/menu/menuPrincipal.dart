@@ -153,13 +153,13 @@ class _MenuprincipalState extends State<Menuprincipal> {
                   const SizedBox(height: 12),
 
                   BotonOpcion(
-                    texto: 'Inspecciones',
+                    texto: 'Enviar Avances',
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Inspecciones(
-                                  titulo: 'Inspecciones')));
+                                  titulo: 'Avances: seleccione un grupo')));
                     },
                   ),
 

@@ -23,7 +23,7 @@ class _InspeccionesState extends State<Inspecciones> {
     return Scaffold(
         appBar: AppBar(
           title:
-              Text(widget.titulo, style: const TextStyle(color: Colors.white)),
+              Text(widget.titulo, style: const TextStyle(color: Colors.white, fontSize: 18)),
           backgroundColor: COLORAPPBAR,
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.white),
